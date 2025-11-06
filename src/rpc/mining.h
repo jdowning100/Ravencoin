@@ -10,6 +10,9 @@
 
 #include <univalue.h>
 
+// Forward declarations
+class JSONRPCRequest;
+
 static const bool DEFAULT_GENERATE = false;
 static const int DEFAULT_GENERATE_THREADS = 1;
 
@@ -20,5 +23,11 @@ UniValue getgenerate(const UniValue& params, bool fHelp);
 
 /** Check bounds on a command line confirm target */
 unsigned int ParseConfirmTarget(const UniValue& value);
+
+/** Get short block template for external mining */
+UniValue getshortblocktemplate(const JSONRPCRequest& request);
+
+/** Submit short block template from external miner */
+UniValue submitshortblocktemplate(const JSONRPCRequest& request);
 
 #endif

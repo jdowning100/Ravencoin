@@ -1276,15 +1276,17 @@ UniValue setgenerate(const JSONRPCRequest& request)
 
 
 static const CRPCCommand commands[] =
-{ //  category              name                      actor (function)         argNames
-  //  --------------------- ------------------------  -----------------------  ----------
-    { "mining",             "getnetworkhashps",       &getnetworkhashps,       {"nblocks","height"} },
-    { "mining",             "getmininginfo",          &getmininginfo,          {} },
-    { "mining",             "prioritisetransaction",  &prioritisetransaction,  {"txid","dummy","fee_delta"} },
-    { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
-    { "mining",             "submitblock",            &submitblock,            {"hexdata","dummy"} },
-    { "mining",             "pprpcsb",                &pprpcsb,                {"header_hash","mix_hash", "nonce"} },
-    { "mining",             "getkawpowhash",          &getkawpowhash,          {"header_hash", "mix_hash", "nonce", "height"} },
+{ //  category              name                            actor (function)              argNames
+  //  --------------------- ------------------------------  ----------------------------  ----------
+    { "mining",             "getnetworkhashps",             &getnetworkhashps,            {"nblocks","height"} },
+    { "mining",             "getmininginfo",                &getmininginfo,               {} },
+    { "mining",             "prioritisetransaction",        &prioritisetransaction,       {"txid","dummy","fee_delta"} },
+    { "mining",             "getblocktemplate",             &getblocktemplate,            {"template_request"} },
+    { "mining",             "getshortblocktemplate",        &getshortblocktemplate,       {} },
+    { "mining",             "submitblock",                  &submitblock,                 {"hexdata","dummy"} },
+    { "mining",             "submitshortblocktemplate",     &submitshortblocktemplate,    {"headerhex","coinbasehex","merklepath"} },
+    { "mining",             "pprpcsb",                      &pprpcsb,                     {"header_hash","mix_hash", "nonce"} },
+    { "mining",             "getkawpowhash",                &getkawpowhash,               {"header_hash", "mix_hash", "nonce", "height"} },
 
     /* Coin generation */
     { "generating",         "getgenerate",            &getgenerate,            {}  },
