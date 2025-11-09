@@ -41,7 +41,7 @@
 class MerklePathCache {
 private:
     // Maximum number of entries to cache
-    static const size_t MAX_CACHE_SIZE = 100;
+    static const size_t MAX_CACHE_SIZE = 1000;
 
     // List to maintain LRU order (most recent at front)
     // Stores pairs of (key, value)
@@ -348,32 +348,6 @@ UniValue submitshortblocktemplate(const JSONRPCRequest& request)
     // Add cached transactions
     for (const auto& tx : cachedTxs) {
         block.vtx.push_back(tx);
-    }
-
-    // Verify merkle root but don't reject - let ProcessNewBlock validate it
-    uint256 computedMerkleRoot = BlockMerkleRoot(block);
-    if (block.hashMerkleRoot != computedMerkleRoot) {
-        LogPrintf("submitshortblocktemplate: WARNING - Merkle root mismatch - hash=%s, expected=%s, got=%s, coinbase=%s, num_txs=%d (submitting anyway for node validation)\n",
-                  block.GetHash().GetHex(), computedMerkleRoot.GetHex(), block.hashMerkleRoot.GetHex(),
-                  coinbaseTx.GetHash().GetHex(), block.vtx.size());
-    } else {
-        LogPrintf("submitshortblocktemplate: Merkle root validation passed - merkle_root=%s\n",
-                  computedMerkleRoot.GetHex());
-    }
-
-    // Check mix_hash validity for KAWPOW blocks (debugging check)
-    if (block.nTime >= nKAWPOWActivationTime) {
-        uint256 computedMixHash;
-        uint256 blockHash = block.GetHashFull(computedMixHash);
-
-        LogPrintf("submitshortblocktemplate: Mix hash debug - block_hash=%s, computed_mix=%s, submitted_mix=%s\n",
-                  blockHash.GetHex(), computedMixHash.GetHex(), block.mix_hash.GetHex());
-
-        if (computedMixHash != block.mix_hash) {
-            LogPrintf("submitshortblocktemplate: WARNING - Mix hash MISMATCH (submitting anyway for node validation)\n");
-        } else {
-            LogPrintf("submitshortblocktemplate: Mix hash validation PASSED\n");
-        }
     }
 
     // Submit block
